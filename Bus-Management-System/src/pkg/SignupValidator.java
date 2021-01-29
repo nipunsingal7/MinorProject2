@@ -1,5 +1,6 @@
 package pkg;
 
+
 public class SignupValidator {
 	
 	protected static int namevalidate(String name)
@@ -96,5 +97,39 @@ public class SignupValidator {
 		
 	}
 	
+	
+	protected static int emailcheck(String mail)
+	{ int m=0;
+		
+	    if (!(mail.endsWith("@gmail.com") || mail.endsWith("@yahoo.com") || mail.endsWith("@hotmail.com") || mail.endsWith("@rediffmail.com")
+	    		|| mail.endsWith("@outlook.com")))
+	    {return(m=1);}
+	
+		
+	  return(m);	
+	}
+	
+	
+	protected static int phonecheck(String phone)
+	
+	{  int k=0;
+		
+		if(phone.length()<10 || phone.length()>10)
+		{
+			return(k=1);
+		}
+		
+		if(phone.charAt(0)=='0' || phone.charAt(0)=='+')
+		{return(k=1);}
+		
+		
+		try { Long.parseLong(phone);	}
+		
+		catch(Exception e)
+		{return(k=1); }
+		
+		return(k);
+		
+	}
 
 }
