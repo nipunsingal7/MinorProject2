@@ -37,7 +37,7 @@ public class Loginservlet extends HttpServlet {
 		String passwd=request.getParameter("password");
 		response.setContentType("html");
 		PrintWriter out=response.getWriter(); 
-		int flag1=0;
+	
 	
   try{Connection c1=Database.databaseconnection();
 	       
@@ -46,20 +46,18 @@ public class Loginservlet extends HttpServlet {
 		
 		if("User Login".equals(button))
 		{ 
-			PreparedStatement stmt=c1.prepareStatement("select * from users where username=? AND password=?"); 
+			PreparedStatement stmt=c1.prepareStatement("select * from users where username=? AND password=? AND validation=?"); 
 		    stmt.setString(1,username);
 		    stmt.setString(2, passwd); 
+		    stmt.setString(3, "yes"); 
 			ResultSet rs=stmt.executeQuery();
 		   
-			while(rs.next())
-		   {
-			   flag1++;
-		   }
+	
 		   
-		   if(flag1==0)
+		   if(!(rs.next()))
 		    {  c1.close();
-			   out.println("<br>Incorrect username or password");		        
-		       request.getRequestDispatcher("main.html").include(request, response);
+			  request.getRequestDispatcher("main.html").include(request, response);
+			  out.println("<br><font color=red>Incorrect username or password</font>");
 		    }
 		   
 		   else
@@ -75,17 +73,14 @@ public class Loginservlet extends HttpServlet {
 		
 		if("Admin Login".equals(button))
 		{ 
-			PreparedStatement stmt1=c1.prepareStatement("select * from admin where username=? AND password=?"); 
+			PreparedStatement stmt1=c1.prepareStatement("select * from admin where username=? AND password=? AND validation=?"); 
 		    stmt1.setString(1,username);
 		    stmt1.setString(2, passwd); 
-			ResultSet rs=stmt1.executeQuery();
+		    stmt1.setString(3, "yes");
+			ResultSet rs1=stmt1.executeQuery();
+		  
 		   
-			while(rs.next())
-		   {
-			   flag1++;
-		   }
-		   
-		   if(flag1==0)
+		   if(!(rs1.next()))
 		    {  c1.close();
 			   out.println("<br>Incorrect username or password");		        
 		       request.getRequestDispatcher("main.html").include(request, response);
@@ -100,9 +95,35 @@ public class Loginservlet extends HttpServlet {
 		    }
 		}
 		
+		if("Staff Login".equals(button))
+		{
+			PreparedStatement stmt2=c1.prepareStatement("select * from conductorcredential where username=? AND password=? AND validation=?"); 
+		    stmt2.setString(1,username);
+		    stmt2.setString(2, passwd); 
+		    stmt2.setString(3, "yes");
+			ResultSet rs3=stmt2.executeQuery();
+		  
+		   
+		   if(!(rs3.next()))
+		    {  c1.close();
+			   out.println("<br>Incorrect username or password");		        
+		       request.getRequestDispatcher("main.html").include(request, response);
+		    }
+		   
+		   else
+		   {   c1.close();
+		      HttpSession s3=request.getSession();
+	          s3.setAttribute("name", username);
+			   request.getRequestDispatcher("dashboard2.html").forward(request, response); 
+		    }
+			
+			
+			
+		}
 		
 		if("Sign Up".equals(button))
-		{ request.getRequestDispatcher("signup.html").forward(request,response);}
+		{ c1.close();
+			request.getRequestDispatcher("signup.html").forward(request,response);}
 		
 		
 	 }
