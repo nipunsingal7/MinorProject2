@@ -82,7 +82,7 @@ public class Loginservlet extends HttpServlet {
 		   
 		   if(!(rs1.next()))
 		    {  c1.close();
-			   out.println("<br>Incorrect username or password");		        
+			   out.println("<br><font color=red>Incorrect username or password</font>");		        
 		       request.getRequestDispatcher("main.html").include(request, response);
 		    }
 		   
@@ -106,7 +106,7 @@ public class Loginservlet extends HttpServlet {
 		   
 		   if(!(rs3.next()))
 		    {  c1.close();
-			   out.println("<br>Incorrect username or password");		        
+			   out.println("<br><font color=red>Incorrect username or password</font>");		        
 		       request.getRequestDispatcher("main.html").include(request, response);
 		    }
 		   
@@ -114,7 +114,8 @@ public class Loginservlet extends HttpServlet {
 		   {   c1.close();
 		      HttpSession s3=request.getSession();
 	          s3.setAttribute("name", username);
-			   request.getRequestDispatcher("dashboard2.html").forward(request, response); 
+	          out.println("<br><h3>Welcome"+" "+username+"</h3>");
+			   request.getRequestDispatcher("dashboard2.html").include(request, response); 
 		    }
 			
 			

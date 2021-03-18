@@ -59,21 +59,62 @@ public class Addservlet extends HttpServlet {
 				String company=request.getParameter("company1").trim();
 				String model=request.getParameter("model1").trim();
 				int seats=Integer.parseInt(request.getParameter("seats1"));
-				String starting=request.getParameter("starting1").trim();
-				String destination=request.getParameter("destination1").trim();
-				String routes=request.getParameter("routes1").trim();
+	
 				
-				PreparedStatement stmt=con.prepareStatement("insert into bus(busno,company,model,seats,startingpoint,destination,routes,validation) values(?,?,?,?,?,?,?,?)");	
+				PreparedStatement stmt=con.prepareStatement("insert into bus(busno,company,model,seats,validation) values(?,?,?,?,?)");	
 			    stmt.setString(1, busno);
 			    stmt.setString(2, company);
 			    stmt.setString(3, model);
 			    stmt.setInt(4, seats);
-			    stmt.setString(5, starting);
-			    stmt.setString(6, destination);
-			    stmt.setString(7, routes);
-			    stmt.setString(8, "yes");
+			    stmt.setString(5, "yes");
 			   
 			    stmt.executeUpdate();
+			    
+			    PreparedStatement stmt0=con.prepareStatement("insert into busroute values(?,?,?,?,?)");
+			    stmt0.setString(1, busno);
+			    stmt0.setString(2, request.getParameter("starting1").trim());
+			    stmt0.setString(3, request.getParameter("atime"));
+			    stmt0.setInt(4,1);
+			    stmt0.setString(5,"yes");
+			    stmt0.addBatch();
+			  
+			    stmt0.setString(1, busno);
+			    stmt0.setString(2, request.getParameter("destination1").trim());
+			    stmt0.setString(3, request.getParameter("atime0"));
+			    stmt0.setInt(4,2);
+			    stmt0.setString(5,"yes");
+			    stmt0.addBatch();
+			    
+			    stmt0.setString(1, busno);
+			    stmt0.setString(2, request.getParameter("stop1").trim());
+			    stmt0.setString(3, request.getParameter("atime1"));
+			    stmt0.setInt(4,3);
+			    stmt0.setString(5,"yes");
+			    stmt0.addBatch();
+			    
+			    stmt0.setString(1, busno);
+			    stmt0.setString(2, request.getParameter("stop2").trim());
+			    stmt0.setString(3, request.getParameter("atime2"));
+			    stmt0.setInt(4,4);
+			    stmt0.setString(5,"yes");
+			    stmt0.addBatch();
+			    
+			    stmt0.setString(1, busno);
+			    stmt0.setString(2, request.getParameter("stop3").trim());
+			    stmt0.setString(3, request.getParameter("atime3"));
+			    stmt0.setInt(4,5);
+			    stmt0.setString(5,"yes");
+			    stmt0.addBatch();
+			    
+			    stmt0.setString(1, busno);
+			    stmt0.setString(2, request.getParameter("stop4").trim());
+			    stmt0.setString(3, request.getParameter("atime4"));
+			    stmt0.setInt(4,6);
+			    stmt0.setString(5,"yes");
+			    stmt0.addBatch();
+			    
+			    stmt0.executeBatch();
+			    
 			    con.close();
 			    request.getRequestDispatcher("addbus.html").include(request, response);
 			    out.println("<br><font color=green>bus added</font>");

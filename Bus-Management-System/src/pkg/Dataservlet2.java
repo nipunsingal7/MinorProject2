@@ -51,17 +51,60 @@ public class Dataservlet2 extends HttpServlet {
 	    	    }
 				
 				
-				if("Modify Bus".equals(button))
+				if("Modify_Bus".equals(button))
 				{	
-					PreparedStatement stmt=con.prepareStatement("update bus set comany=?,model=?,seats=?,startingpoint=?,destination=?,routes=? WHERE busno=?");
+					
+					PreparedStatement stmt=con.prepareStatement("update bus set company=?,model=?,seats=? WHERE busno=?");
 					stmt.setString(1,request.getParameter("company2").trim());
 					stmt.setString(2,request.getParameter("model2").trim());
-					stmt.setInt(3,Integer.parseInt(request.getParameter("seats2")));
-					stmt.setString(4,request.getParameter("starting2").trim());
-					stmt.setString(5,request.getParameter("destination2").trim());
-					stmt.setString(6,request.getParameter("routes2"));
-					stmt.setString(7,busno);
+					stmt.setInt(3,Integer.parseInt(request.getParameter("seats2")));	
+					stmt.setString(4,busno);
 					stmt.executeUpdate();
+					
+					PreparedStatement stmt0=con.prepareStatement("update busroute set route=?,AVTime=? where bus_no=? AND number=? AND validation=?");
+					stmt0.setString(1,request.getParameter("starting2").trim());
+					stmt0.setString(2,request.getParameter("atime"));
+					stmt0.setString(3,busno);
+					stmt0.setInt(4,1);
+					stmt0.setString(5,"yes");
+					stmt0.addBatch();
+					
+					stmt0.setString(1,request.getParameter("destination2").trim());
+					stmt0.setString(2,request.getParameter("atime0"));
+					stmt0.setString(3,busno);
+					stmt0.setInt(4,2);
+					stmt0.setString(5,"yes");
+					stmt0.addBatch();
+					
+					stmt0.setString(1,request.getParameter("stop1").trim());
+					stmt0.setString(2,request.getParameter("atime1"));
+					stmt0.setString(3,busno);
+					stmt0.setInt(4,3);
+					stmt0.setString(5,"yes");
+					stmt0.addBatch();
+					
+					stmt0.setString(1,request.getParameter("stop2").trim());
+					stmt0.setString(2,request.getParameter("atime2"));
+					stmt0.setString(3,busno);
+					stmt0.setInt(4,4);
+					stmt0.setString(5,"yes");
+					stmt0.addBatch();
+					
+					stmt0.setString(1,request.getParameter("stop3").trim());
+					stmt0.setString(2,request.getParameter("atime3"));
+					stmt0.setString(3,busno);
+					stmt0.setInt(4,5);
+					stmt0.setString(5,"yes");
+					stmt0.addBatch();
+					
+					stmt0.setString(1,request.getParameter("stop4").trim());
+					stmt0.setString(2,request.getParameter("atime4"));
+					stmt0.setString(3,busno);
+					stmt0.setInt(4,6);
+					stmt0.setString(5,"yes");
+					stmt0.addBatch();
+					
+					stmt0.executeBatch();
 					con.close();
 					request.getRequestDispatcher("data.html").include(request, response);
 				    out.println("<br><font color=green>Bus Modified</font>");
@@ -69,7 +112,7 @@ public class Dataservlet2 extends HttpServlet {
 				}
 	    	
 				
-				if("Delete Bus".equals(button))
+				if("Delete_Bus".equals(button))
 				{ 
 				
 				PreparedStatement stmt1=con.prepareStatement("update bus set validation=? WHERE busno=?");
@@ -101,6 +144,10 @@ public class Dataservlet2 extends HttpServlet {
 				stmt4.executeUpdate();
 				stmt11.executeUpdate();
 				
+				PreparedStatement stmt01=con.prepareStatement("update busroute set validation='no' where bus_no=?");
+				stmt01.setString(1, busno);
+				stmt01.executeUpdate();
+				
 				con.close();
 				request.getRequestDispatcher("data.html").include(request, response);
 			    out.println("<br><font color=green>Bus Deleted</font>");
@@ -108,7 +155,7 @@ public class Dataservlet2 extends HttpServlet {
 				}
 				
 				
-				if("Modify Owner".equals(button))
+				if("Modify_Owner".equals(button))
 				{ String phone0=request.getParameter("phone1").trim();
 					
 					Statement stm3=con.createStatement();
@@ -156,7 +203,7 @@ public class Dataservlet2 extends HttpServlet {
 	    	
 	    	
 				
-				if("Delete Owner".equals(button))
+				if("Delete_Owner".equals(button))
 				{ 
 				 PreparedStatement stmt7=con.prepareStatement("update owner set validation=? WHERE busno_1=? AND validation=? ");
 				 stmt7.setString(1,"no");
@@ -172,7 +219,7 @@ public class Dataservlet2 extends HttpServlet {
 	    	
 	    	
 				
-				if("Modify Driver".equals(button))
+				if("Modify_Driver".equals(button))
 				{ String phone01=request.getParameter("phone2").trim();
 				
 				Statement stm4=con.createStatement();
@@ -220,7 +267,7 @@ public class Dataservlet2 extends HttpServlet {
 	    	
 	    	
 				
-				if("Delete Driver".equals(button))
+				if("Delete_Driver".equals(button))
 				{ 
 				 PreparedStatement stmt10=con.prepareStatement("update driver set validation=? WHERE busno_2=? AND validation=? ");
 				 stmt10.setString(1,"no");
@@ -236,7 +283,7 @@ public class Dataservlet2 extends HttpServlet {
 				
 				
 				
-				if("Modify Conductor".equals(button))
+				if("Modify_Conductor".equals(button))
 				{   String phone=request.getParameter("phone3").trim();
 					String email1=request.getParameter("email3").trim();
 					Statement stm1=con.createStatement();
@@ -303,7 +350,7 @@ public class Dataservlet2 extends HttpServlet {
 					
 				}
 				
-				if("Delete Conductor".equals(button))
+				if("Delete_Conductor".equals(button))
 				{
 					PreparedStatement stmt13=con.prepareStatement("update conductor set validation=? WHERE busno_3=? AND validation=? ");
 					 stmt13.setString(1,"no");

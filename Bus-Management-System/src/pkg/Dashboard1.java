@@ -82,7 +82,7 @@ public class Dashboard1 extends HttpServlet {
 		
 		 if("Logout".equals(button))
 		 {   s2.invalidate();
-			 request.getRequestDispatcher("main.html").forward(request, response);
+			 request.getRequestDispatcher("main.html").include(request, response);
 			 out.println("<br><font color=green>Successfully logout</font>");
 		 }
 		 

@@ -182,6 +182,12 @@ public class Swapservlet extends HttpServlet {
     	 
     	 
     }
+    	    
+    	    else
+    	    {con.close();
+    	    request.getRequestDispatcher("swapstaff.html").include(request, response);
+		    out.println("<br><font color=red>Buses not found</font>");    
+    	    }
     
     	
     }

@@ -1,2 +1,6 @@
 name to be shown on dashboard
-stop adding new driver,conductor to bus but bus already have them
+complaint/feedback form
+date and time staff added
+
+select t1.busno,t1.routes,t1.AVTime,t2.routes,t2.AVTime from temp t1,temp t2  where t1.routes='delhi' AND t2.routes='mumbai' AND t1.busno=t2.busno AND t1.number<t
+2.number AND t1.valid='yes' AND t2.valid='yes';
