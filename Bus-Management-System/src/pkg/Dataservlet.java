@@ -71,7 +71,7 @@ public class Dataservlet extends HttpServlet {
 	        		  String comp=rs.getString("company");
 	        		  String model=rs.getString("model");
 	        		  int seat=rs.getInt("seats");
-	        		  
+	        		  String[] daycheck=new String[]{" "," "," "," "," "," "," "};
 	        		  
 	        		  PreparedStatement stmt0=con.prepareStatement("select route,AVTime from busroute where bus_no=? AND validation=? ORDER BY number ASC");
 	        		  stmt0.setString(1, busno);
@@ -79,32 +79,48 @@ public class Dataservlet extends HttpServlet {
 	        		  ResultSet rs0=stmt0.executeQuery();
 	        		  
 	        		  rs0.next();
+	        
 	        		  
-	        		
-	  
+	        		 Statement stmt01=con.createStatement();
+	        		  ResultSet rs01=stmt01.executeQuery("select number from days where busno_6='"+busno+"' AND days!='null' AND validation='yes' ORDER BY number ASC");
+	                  while(rs01.next())
+	                  {
+	                  daycheck[rs01.getInt("number")-1]="checked";
+	         
+	                  }
+	                  
+	                  
 	                   out.println("<html> <head> <title>Modify bus</title> </head> <body>"+
         		  "<form action=Dataservlet2 method=post>"+
         		  "&ensp;&emsp;&emsp; Bus no:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input type=text name=busno1  readonly value="+busno+" size=18/><br>"+  		   
-        		  "&emsp;&emsp;&emsp;Enter Company Name:&emsp;&emsp;<input type=text name=company2 value="+comp+" size=18 /><br>"+
-        		  "&emsp;&emsp;&emsp;Enter Model No:&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;<input type=text name=model2 value="+model+" size=18 /><br>"+
-        		  "&emsp;&emsp;&emsp;Enter No of seats:&emsp;&emsp;&emsp;&emsp;&ensp;<input type=text name=seats2 value="+seat+" size=18 /><br>"+
-        		  "&emsp;&emsp;&emsp;Enter Starting Point:&emsp;&emsp;&emsp;&ensp;<input type=text name=starting2 value="+rs0.getString("route")+" size=18 />"+
+        		  "&emsp;&emsp;&emsp;Enter Company Name:&emsp;&emsp;<input type=text name=company2 value='"+comp+"' size=18 /><br>"+
+        		  "&emsp;&emsp;&emsp;Enter Model No:&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;<input type=text name=model2 value='"+model+"' size=18 /><br>"+
+        		  "&emsp;&emsp;&emsp;Enter No of seats:&emsp;&emsp;&emsp;&emsp;&ensp;<input type=text name=seats2 value='"+seat+"' size=18 /><br>"+
+        		  "&emsp;&emsp;&emsp;Enter Starting Point:&emsp;&emsp;&emsp;&ensp;<input type=text name=starting2 value='"+rs0.getString("route")+"' size=18 />"+
         		  "&emsp;&emsp;&emsp;Arrival Time :&emsp;&emsp;<input type=time name=atime value="+rs0.getString("AVTime")+" size=8 /><br>");
 	               rs0.next();    
-        		  out.println("&emsp;&emsp;&emsp;Enter Destination:&emsp;&emsp;<input type=text name=destination2 value="+rs0.getString("route")+" size=18/>" +  
+        		  out.println("&emsp;&emsp;&emsp;Enter Destination:&emsp;&emsp;<input type=text name=destination2 value='"+rs0.getString("route")+"' size=18/>" +  
         		  "&emsp;&emsp;&emsp;Arrival Time :&emsp;&emsp;<input type=time name=atime0 value="+rs0.getString("AVTime")+" size=8 /><br>");
         		  rs0.next();
-        		  out.println("&emsp;&emsp;&emsp;Enter Stop1:&emsp;&emsp;<input type=text name=stop1 value="+rs0.getString("route")+" size=18/>" + 
+        		  out.println("&emsp;&emsp;&emsp;Enter Stop1:&emsp;&emsp;<input type=text name=stop1 value='"+rs0.getString("route")+"' size=18/>" + 
         		  "&emsp;&emsp;&emsp;Arrival Time :&emsp;&emsp;<input type=time name=atime1 value="+rs0.getString("AVTime")+" size=8/><br>");
         		  rs0.next();
-        		  out.println("&emsp;&emsp;&emsp;Enter Stop2:&emsp;&emsp;<input type=text name=stop2 value="+rs0.getString("route")+" size=18/>" + 
+        		  out.println("&emsp;&emsp;&emsp;Enter Stop2:&emsp;&emsp;<input type=text name=stop2 value='"+rs0.getString("route")+"' size=18/>" + 
         		  "&emsp;&emsp;&emsp;Arrival Time :&emsp;&emsp;<input type=time name=atime2 value="+rs0.getString("AVTime")+" size=8/><br>");
         		  rs0.next();
-        		  out.println("&emsp;&emsp;&emsp;Enter Stop3:&emsp;&emsp;<input type=text name=stop3 value="+rs0.getString("route")+" size=18/>" + 
+        		  out.println("&emsp;&emsp;&emsp;Enter Stop3:&emsp;&emsp;<input type=text name=stop3 value='"+rs0.getString("route")+"' size=18/>" + 
         		  "&emsp;&emsp;&emsp;Arrival Time :&emsp;&emsp;<input type=time name=atime3 value="+rs0.getString("AVTime")+" size=8/><br>");
         		  rs0.next();
-        		 out.println("&emsp;&emsp;&emsp;Enter Stop4:&emsp;&emsp;<input type=text name=stop4 value="+rs0.getString("route")+" size=18/>" + 
-        		  "&emsp;&emsp;&emsp;Arrival Time :&emsp;&emsp;<input type=time name=atime4 value="+rs0.getString("AVTime")+" size=8/><br><br>" + 
+        		 out.println("&emsp;&emsp;&emsp;Enter Stop4:&emsp;&emsp;<input type=text name=stop4 value='"+rs0.getString("route")+"' size=18/>" + 
+        		  "&emsp;&emsp;&emsp;Arrival Time :&emsp;&emsp;<input type=time name=atime4 value="+rs0.getString("AVTime")+" size=8/><br>" +
+        				 
+                   "&emsp;&emsp;&emsp;Days :&emsp;&emsp;Mon<input type=checkbox name=days1 value=monday "+ daycheck[0]+ "/>"+
+                   "&emsp;Tue<input type=checkbox name=days2 value=tuesday "+ daycheck[1]+ "/>"+
+                   "&emsp;Wed<input type=checkbox name=days3 value=wednesday "+ daycheck[2]+ "/>"+
+                   "&emsp;Thur<input type=checkbox name=days4 value=thursday "+ daycheck[3]+ "/>"+
+                   "&emsp;Fri<input type=checkbox name=days5 value=friday "+ daycheck[4]+ "/>"+
+                   "&emsp;Sat<input type=checkbox name=days6 value=saturday "+ daycheck[5]+ "/>"+
+                   "&emsp;Sun<input type=checkbox name=days7 value=sunday "+ daycheck[6]+ "/><br><br>"+      		  
         		  "&emsp;&emsp;&emsp;&emsp;<input type=submit name=button2 value=Modify_Bus />"+
         		  "&emsp;&emsp;&emsp;<input type=submit name=button2 value=Delete_Bus />"+                          
         		  "&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input type=submit name=button2 value=Back />"+
@@ -208,8 +224,9 @@ public class Dataservlet extends HttpServlet {
 	
 	else
 	{ 
-		 out.println("<br><font color=red>Login first....</font>");
+		 
 		  request.getRequestDispatcher("main.html").include(request, response);
+		  out.println("<br><font color=red>Login first....</font>");
 	 }
 	
 		

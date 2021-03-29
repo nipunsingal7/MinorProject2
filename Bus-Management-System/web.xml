@@ -53,6 +53,16 @@
 <url-pattern>/Data</url-pattern>
 </servlet-mapping>
 
+<servlet>
+<servlet-name>Bookticket</servlet-name>
+<servlet-class>pkg.Bookticket</servlet-class>
+</servlet>
+
+<servlet-mapping>
+<servlet-name>Bookticket</servlet-name>
+<url-pattern>/Bookticket</url-pattern>
+</servlet-mapping>
+
 
 
 

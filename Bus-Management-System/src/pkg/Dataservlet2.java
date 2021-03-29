@@ -2,7 +2,6 @@ package pkg;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -53,6 +52,15 @@ public class Dataservlet2 extends HttpServlet {
 				
 				if("Modify_Bus".equals(button))
 				{	
+					String[] addday=new String[7];
+					addday[0]=request.getParameter("days1");
+		            addday[1]=request.getParameter("days2");
+		            addday[2]=request.getParameter("days3");
+		            addday[3]=request.getParameter("days4");
+		            addday[4]=request.getParameter("days5");
+		            addday[5]=request.getParameter("days6");
+		            addday[6]=request.getParameter("days7");
+		  
 					
 					PreparedStatement stmt=con.prepareStatement("update bus set company=?,model=?,seats=? WHERE busno=?");
 					stmt.setString(1,request.getParameter("company2").trim());
@@ -105,6 +113,20 @@ public class Dataservlet2 extends HttpServlet {
 					stmt0.addBatch();
 					
 					stmt0.executeBatch();
+					
+					PreparedStatement stmt02=con.prepareStatement("update days set days=? where busno_6=? AND number=?");
+				    
+				    for(int z=0;z<7;z++)
+				    {
+				    	stmt02.setString(2, busno);
+					    stmt02.setString(1,addday[z] );
+					    stmt02.setInt(3,z+1);
+					    stmt02.addBatch();
+				    }
+				    
+				    stmt02.executeBatch();
+				    
+					
 					con.close();
 					request.getRequestDispatcher("data.html").include(request, response);
 				    out.println("<br><font color=green>Bus Modified</font>");
@@ -147,6 +169,10 @@ public class Dataservlet2 extends HttpServlet {
 				PreparedStatement stmt01=con.prepareStatement("update busroute set validation='no' where bus_no=?");
 				stmt01.setString(1, busno);
 				stmt01.executeUpdate();
+				
+				PreparedStatement stmt02=con.prepareStatement("update days set validation='no' where bus_no=?");
+				stmt02.setString(1, busno);
+				stmt02.executeUpdate();
 				
 				con.close();
 				request.getRequestDispatcher("data.html").include(request, response);
@@ -383,8 +409,9 @@ public class Dataservlet2 extends HttpServlet {
 		
 		else
 		{ 
-			 out.println("<br><font color=red>Login first....</font>");
+			 
 			  request.getRequestDispatcher("main.html").include(request, response);
+			  out.println("<br><font color=red>Login first....</font>");
 		 }
 		
 		

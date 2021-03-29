@@ -61,10 +61,12 @@ public class Loginservlet extends HttpServlet {
 		    }
 		   
 		   else
-		   {   c1.close();	 
+		   {   	 
 		       HttpSession s1=request.getSession();
-		       s1.setAttribute("name", username);
 		       s1.setMaxInactiveInterval(600);
+		       s1.setAttribute("username",username);
+		       s1.setAttribute("email",rs.getString("email"));
+		       c1.close();
 			   request.getRequestDispatcher("dashboard.html").forward(request, response); 
 		    }
 		   
@@ -82,14 +84,15 @@ public class Loginservlet extends HttpServlet {
 		   
 		   if(!(rs1.next()))
 		    {  c1.close();
-			   out.println("<br><font color=red>Incorrect username or password</font>");		        
+			   		        
 		       request.getRequestDispatcher("main.html").include(request, response);
+		       out.println("<br><font color=red>Incorrect username or password</font>");
 		    }
 		   
 		   else
 		   {   c1.close();
 		      HttpSession s2=request.getSession();
-	          s2.setAttribute("name", username);
+	          s2.setAttribute("username", username);
 	          s2.setMaxInactiveInterval(1500);
 			   request.getRequestDispatcher("dashboard1.html").forward(request, response); 
 		    }
@@ -97,7 +100,7 @@ public class Loginservlet extends HttpServlet {
 		
 		if("Staff Login".equals(button))
 		{
-			PreparedStatement stmt2=c1.prepareStatement("select * from conductorcredential where username=? AND password=? AND validation=?"); 
+			PreparedStatement stmt2=c1.prepareStatement("select * from conductorcredential where id=? AND password=? AND validation=?"); 
 		    stmt2.setString(1,username);
 		    stmt2.setString(2, passwd); 
 		    stmt2.setString(3, "yes");
@@ -106,16 +109,18 @@ public class Loginservlet extends HttpServlet {
 		   
 		   if(!(rs3.next()))
 		    {  c1.close();
-			   out.println("<br><font color=red>Incorrect username or password</font>");		        
+			   		        
 		       request.getRequestDispatcher("main.html").include(request, response);
+		       out.println("<br><font color=red>Incorrect username or password</font>");
 		    }
 		   
 		   else
-		   {   c1.close();
+		   {   
 		      HttpSession s3=request.getSession();
-	          s3.setAttribute("name", username);
-	          out.println("<br><h3>Welcome"+" "+username+"</h3>");
-			   request.getRequestDispatcher("dashboard2.html").include(request, response); 
+	          s3.setAttribute("username", username);
+	          s3.setAttribute("busno",rs3.getString("busno_4"));
+	          c1.close();
+			   request.getRequestDispatcher("dashboard2.html").forward(request, response); 
 		    }
 			
 			

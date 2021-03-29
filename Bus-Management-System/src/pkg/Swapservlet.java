@@ -208,8 +208,9 @@ public class Swapservlet extends HttpServlet {
 		
 	else
 	{ 
-		 out.println("<br><font color=red>Login first....</font>");
+		 
 		  request.getRequestDispatcher("main.html").include(request, response);
+		  out.println("<br><font color=red>Login first....</font>");
 	 }
 		
 		

@@ -73,11 +73,15 @@ public class Dashboard1 extends HttpServlet {
 			 request.getRequestDispatcher("swapstaff.html").forward(request, response);
 		 }
 		 
+		 if("Block/Unblock user".equals(button))
+		 {
+			 request.getRequestDispatcher("blockuser.html").forward(request, response);
+		 }
 		 
-		 if("Change Password".equals(button))
+		 /*if("Change Password".equals(button))
 		 {
 			 request.getRequestDispatcher("changepassword.html").forward(request, response);
-		 }
+		 }*/
 		
 		
 		 if("Logout".equals(button))
@@ -87,13 +91,24 @@ public class Dashboard1 extends HttpServlet {
 		 }
 		 
 		 
+		 if("See bus records".equals(button))
+		 {
+			 request.getRequestDispatcher("busrecords.html").forward(request, response);
+		 }
+		 
+		 if("See ticket records".equals(button))
+		 {
+			 request.getRequestDispatcher("ticketrecords.html").forward(request, response);
+		 }
+		 
 		 
 	 }	 
 		
 	 else
 	 { 
-		 out.println("<br><font color=red>Login first....</font>");
+		 
 		  request.getRequestDispatcher("main.html").include(request, response);
+		  out.println("<br><font color=red>Login first....</font>");
 	 }
 	 
 		 

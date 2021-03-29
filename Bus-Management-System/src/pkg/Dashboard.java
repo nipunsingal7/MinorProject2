@@ -3,6 +3,7 @@ package pkg;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import pkg.Database;
 import java.sql.*;
+import java.util.Date;
 /**
  * Servlet implementation class Dashboard
  */
@@ -45,31 +47,52 @@ public class Dashboard extends HttpServlet {
 		 
 		 if("Search Bus".equals(button))
 		 {  
-		   	 
-		   PreparedStatement stmt=con.prepareStatement("select t1.bus_no,t1.route,t1.AVTime,t2.route,t2.AVTime from busroute t1,busroute t2 where t1.route=? AND t2.route=? AND t1.bus_no=t2.bus_no AND t1.number<t2.number AND t1.validation='yes' AND t2.validation='yes'");
-           stmt.setString(1,request.getParameter("starting").trim());	
-           stmt.setString(2,request.getParameter("destination").trim());
+			 String start=request.getParameter("starting").trim();
+			 String dest=request.getParameter("destination").trim();
+			 
+			 out.println(request.getParameter("date1"));
+			 SimpleDateFormat ftm=new SimpleDateFormat("yyyy-MM-dd");
+			 Date date2=ftm.parse(request.getParameter("date1"));
+             SimpleDateFormat ftm1=new SimpleDateFormat("EEEE");
+             String sdate=ftm1.format(date2);
+			 
+             s1.setAttribute("date",date2);
+             s1.setAttribute("from",start);
+             s1.setAttribute("to",dest);
+            
+		   	
+		   PreparedStatement stmt=con.prepareStatement("select t1.bus_no,t1.route,t1.AVTime,t2.route,t2.AVTime,t3.days from busroute t1,busroute t2, days t3 where t1.route=? AND t2.route=? AND t3.days=? AND t1.bus_no=t2.bus_no AND t1.number<t2.number AND t1.validation='yes' AND t2.validation='yes' AND t3.busno_6=t2.bus_no");
+           stmt.setString(1,start);	
+           stmt.setString(2,dest);
+           stmt.setString(3,sdate);
            ResultSet rs=stmt.executeQuery();
           
            if(rs.next())
            
            { out.println("<html> <head> <title>Search Bus</title> </head> <body><form action=Bookticket method=post>"+
-  		  "&ensp;&emsp;&emsp; Enter Bus No:&emsp;<input type=text name=bus_no size=7/><br><br><br>"+
-  		 "&emsp;&emsp;&emsp;<input type=submit name=book value=Book_ticket />"+                          
-		  "&emsp;&emsp;&emsp;&emsp;&emsp;<input type=submit name=button2 value=Back /><br><br><br></form>"+
+  		  "&ensp;&emsp;&emsp;Enter No.of Passengers:&emsp;&emsp;<input type=number name=passenger min=1 max=15 size=5 /><br><br><br>"+
+  		 "&emsp;&emsp;&emsp;<input type=submit name=button2 value=Select_seat />"+                          
+		  "&emsp;&emsp;&emsp;&emsp;&emsp;<input type=submit name=button2 value=Back /><br><br><br>"+
+  		 
          "<style>table,th,td{border: 1px solid black; border-collapse: collapse} th,td{ padding: 15px}</style>"+
-		  "<table><tr><th>BusNo</th><th>StartingPoint</th><th>DepartureTime</th><th>Destination</th><th>ArrivalTime</th></tr>"+
-		  "<tr><td>"+rs.getString("t1.bus_no")+"</td><td>"+rs.getString("t1.route")+"</td><td>"+rs.getString("t1.AVTime")+"</td><td>"+rs.getString("t2.route")+"</td><td>"+rs.getString("t2.AVTime")+"</td></tr>");
-             while(rs.next())
+		  "<table><tr><th>BusNo</th><th>StartingPoint</th><th>DepartureTime</th><th>Destination</th><th>ArrivalTime</th><th>Journey Days</th><th>Select The Bus</th></tr>"+
+		  
+		  "<tr><td>"+rs.getString("t1.bus_no")+"</td><td>"+rs.getString("t1.route")+"</td><td>"+rs.getString("t1.AVTime")+"</td><td>"+rs.getString("t2.route")+"</td><td>"+rs.getString("t2.AVTime")+"</td>"+
+		  "<td>"+rs.getString("t3.days")+"</td><td><input type=radio name=rbutton value="+rs.getString("t1.bus_no")+" /></td></tr>");
+            
+           while(rs.next())
              {
-        	   out.println("<tr><td>"+rs.getString("t1.bus_no")+"</td><td>"+rs.getString("t1.route")+"</td><td>"+rs.getString("t1.AVTime")+"</td><td>"+rs.getString("t2.route")+"</td><td>"+rs.getString("t2.AVTime")+"</td></tr>");
+        	   out.println("<tr><td>"+rs.getString("t1.bus_no")+"</td><td>"+rs.getString("t1.route")+"</td><td>"+rs.getString("t1.AVTime")+"</td><td>"+rs.getString("t2.route")+"</td><td>"+rs.getString("t2.AVTime")+"</td><td>"+rs.getString("t3.days")+
+        	   "</td><td><input type=radio name=rbutton value="+rs.getString("t1.bus_no")+" /></td></tr>");
              }
            
-           out.println("</body></html>");
+           out.println("</table></form></body></html>");
+           con.close();
 		 }
            
            else
-           {request.getRequestDispatcher("dashboard.html").include(request, response);
+           {con.close();
+        	request.getRequestDispatcher("dashboard.html").include(request, response);
 		    out.println("<br><font color=red>No bus found</font>");
         	   
            }
@@ -90,15 +113,17 @@ public class Dashboard extends HttpServlet {
 	  }
 	 
 	  catch(Exception e)
-	   {out.println("Error catched:"+" "+e); }
+	   {request.getRequestDispatcher("dashboard.html").include(request, response);
+		out.println("<br><br><font color=red>enter all details</font>"); }
 		
 	 
 	 }	 
 		
 	 else
 	 { 
-		 out.println("<br><font color=red>Login first....</font>");
+		 
 		  request.getRequestDispatcher("main.html").include(request, response);
+		  out.println("<br><font color=red>Login first....</font>");
 	 }
 	 
 		

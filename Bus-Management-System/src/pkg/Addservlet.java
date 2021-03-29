@@ -59,8 +59,15 @@ public class Addservlet extends HttpServlet {
 				String company=request.getParameter("company1").trim();
 				String model=request.getParameter("model1").trim();
 				int seats=Integer.parseInt(request.getParameter("seats1"));
-	
-				
+	            String[] day=new String[7];
+				day[0]=request.getParameter("days1");
+	            day[1]=request.getParameter("days2");
+	            day[2]=request.getParameter("days3");
+	            day[3]=request.getParameter("days4");
+	            day[4]=request.getParameter("days5");
+	            day[5]=request.getParameter("days6");
+	            day[6]=request.getParameter("days7");
+	            
 				PreparedStatement stmt=con.prepareStatement("insert into bus(busno,company,model,seats,validation) values(?,?,?,?,?)");	
 			    stmt.setString(1, busno);
 			    stmt.setString(2, company);
@@ -114,6 +121,19 @@ public class Addservlet extends HttpServlet {
 			    stmt0.addBatch();
 			    
 			    stmt0.executeBatch();
+			    
+			    PreparedStatement stmt01=con.prepareStatement("insert into days values(?,?,?,?)");
+			    
+			    for(int z=0;z<7;z++)
+			    {
+			    	stmt01.setString(1, busno);
+				    stmt01.setString(2, day[z]);
+				    stmt01.setString(3,"yes");
+				    stmt01.setInt(4,z+1);
+				    stmt01.addBatch();
+			    }
+			    
+			    stmt01.executeBatch();
 			    
 			    con.close();
 			    request.getRequestDispatcher("addbus.html").include(request, response);
@@ -322,10 +342,11 @@ public class Addservlet extends HttpServlet {
 			
 		}
 		
-		else
+		 else
 		{ 
-			 out.println("<br><font color=red>Login first....</font>");
+			 
 			  request.getRequestDispatcher("main.html").include(request, response);
+			  out.println("<br><font color=red>Login first....</font>");
 		 }
 		
 		

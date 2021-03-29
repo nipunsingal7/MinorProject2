@@ -128,7 +128,8 @@ public class Signupservlet extends HttpServlet {
 				    	  
 				    	   con.close();
 				    	   
-						  request.getRequestDispatcher("main.html").forward(request, response);
+						  request.getRequestDispatcher("main.html").include(request, response);
+						  out.println("<br><font color=green>User created</font>");
 	
 			
 			
