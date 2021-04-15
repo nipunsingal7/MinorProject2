@@ -78,10 +78,10 @@ public class Dashboard1 extends HttpServlet {
 			 request.getRequestDispatcher("blockuser.html").forward(request, response);
 		 }
 		 
-		 /*if("Change Password".equals(button))
+		 if("Change Password".equals(button))
 		 {
-			 request.getRequestDispatcher("changepassword.html").forward(request, response);
-		 }*/
+			 request.getRequestDispatcher("forgotpasswd.html").forward(request, response);
+		 }
 		
 		
 		 if("Logout".equals(button))

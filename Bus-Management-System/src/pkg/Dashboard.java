@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import pkg.Database;
 import java.sql.*;
 import java.util.Date;
+import java.util.Enumeration;
 /**
  * Servlet implementation class Dashboard
  */
@@ -39,6 +40,7 @@ public class Dashboard extends HttpServlet {
 		 HttpSession s1=request.getSession(false);
 		 response.setContentType("html");
 		 PrintWriter out=response.getWriter();
+		 
 	
 	 if(s1!=null)
 			 
@@ -50,7 +52,7 @@ public class Dashboard extends HttpServlet {
 			 String start=request.getParameter("starting").trim();
 			 String dest=request.getParameter("destination").trim();
 			 
-			 out.println(request.getParameter("date1"));
+			
 			 SimpleDateFormat ftm=new SimpleDateFormat("yyyy-MM-dd");
 			 Date date2=ftm.parse(request.getParameter("date1"));
              SimpleDateFormat ftm1=new SimpleDateFormat("EEEE");
@@ -109,6 +111,11 @@ public class Dashboard extends HttpServlet {
 			 out.println("<br><font color=green>Successfully logout</font>");
 		 }
 		 
+		 
+		 if("Change Password".equals(button))
+		 {   con.close();
+		 request.getRequestDispatcher("forgotpasswd.html").forward(request, response); 
+		 }
 		 
 	  }
 	 

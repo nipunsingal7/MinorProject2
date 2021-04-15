@@ -51,6 +51,10 @@ public class Dashboard2 extends HttpServlet {
 			 out.println("<br><font color=green>Successfully logout</font>");
 		 }
 		 
+		 if("Change Password".equals(button0))
+		 {  
+		  request.getRequestDispatcher("forgotpasswd.html").forward(request, response); 
+		 }
 		 
 		if("list_ticket".equals(button0))
 	    {  

@@ -12,6 +12,8 @@ import java.io.PrintWriter;
 
 
 import java.sql.*;
+import java.util.Enumeration;
+
 import pkg.Database;
 /**
  * Servlet implementation class Loginservlet
@@ -37,8 +39,7 @@ public class Loginservlet extends HttpServlet {
 		String passwd=request.getParameter("password");
 		response.setContentType("html");
 		PrintWriter out=response.getWriter(); 
-	
-	
+
   try{Connection c1=Database.databaseconnection();
 	       
 	     
@@ -65,6 +66,7 @@ public class Loginservlet extends HttpServlet {
 		       HttpSession s1=request.getSession();
 		       s1.setMaxInactiveInterval(600);
 		       s1.setAttribute("username",username);
+		       s1.setAttribute("type","user");
 		       s1.setAttribute("email",rs.getString("email"));
 		       c1.close();
 			   request.getRequestDispatcher("dashboard.html").forward(request, response); 
@@ -93,6 +95,7 @@ public class Loginservlet extends HttpServlet {
 		   {   c1.close();
 		      HttpSession s2=request.getSession();
 	          s2.setAttribute("username", username);
+	          s2.setAttribute("type", "admin");
 	          s2.setMaxInactiveInterval(1500);
 			   request.getRequestDispatcher("dashboard1.html").forward(request, response); 
 		    }
@@ -118,6 +121,7 @@ public class Loginservlet extends HttpServlet {
 		   {   
 		      HttpSession s3=request.getSession();
 	          s3.setAttribute("username", username);
+	          s3.setAttribute("type", "staff");
 	          s3.setAttribute("busno",rs3.getString("busno_4"));
 	          c1.close();
 			   request.getRequestDispatcher("dashboard2.html").forward(request, response); 
@@ -131,8 +135,19 @@ public class Loginservlet extends HttpServlet {
 		{ c1.close();
 			request.getRequestDispatcher("signup.html").forward(request,response);}
 		
+	
+		
+		
+		if("Forgot Password".equals(button))
+		{ 
+			c1.close();
+			request.getRequestDispatcher("forgotpasswd2.html").forward(request,response);						
+		}
+		
 		
 	 }
+  
+  
 		
 		catch(Exception e)
 	    {out.println("Exception caught"+" "+e);    }

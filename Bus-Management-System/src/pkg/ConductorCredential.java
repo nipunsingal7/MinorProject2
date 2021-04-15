@@ -1,8 +1,9 @@
 package pkg;
 
 import java.util.Random;
-
+import java.util.Date;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import pkg.Database;
 import pkg.Mailclass;
 
@@ -87,5 +88,38 @@ public class ConductorCredential {
 	}
 	
 	
+	
+	public static void otp(String type, String email)
+	{
+		int no1=(rm.nextInt(10000)%900)+100;
+	    String number1= String.valueOf(no1);
+	    
+	    int no2=(rm.nextInt(10000)%900)+100;
+	    String number2= String.valueOf(no2);
+	    		
+	    try
+		{Connection con1=Database.databaseconnection();
+		   
+		  SimpleDateFormat ftm3=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		  Date date=new Date();
+		  String date1=ftm3.format(date);
+		  
+		   Statement stm=con1.createStatement();
+		   
+		   if(type.equals("user"))		   
+		   {stm.executeUpdate("update users set otp='"+number1+number2+"' , DTime='"+date1+"' where email='"+email+"' ");}
+		   
+		   if(type.equals("staff"))		   
+		   {stm.executeUpdate("update conductorcredential set otp='"+number1+number2+"' , DTime='"+date1+"' where email='"+email+"' " );}
+		   
+		   con1.close();
+		}
+	    
+	    catch(Exception e)
+	    {System.out.println("error:"+" "+e);}
+	    
+	    Mailclass.sendmail(email,"Your One-time-password (OTP) is  "+number1+number2 );
+		
+	}
 
 }
