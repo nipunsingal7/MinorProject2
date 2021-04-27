@@ -129,7 +129,7 @@ public class Bookticket2 extends HttpServlet {
 			         con.close();
 			         
 			         request.getRequestDispatcher("dashboard.html").include(request, response);
-						out.println("<br><br><font color=green>Tickets Booked. Ticket copy send to the registered email</font>"); 
+						out.println("<br><br><h3>Tickets Booked. Ticket copy send to the registered email</h3>"); 
 			 } 
 			 
         }
