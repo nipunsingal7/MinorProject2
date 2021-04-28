@@ -76,8 +76,9 @@ public class Signupservlet extends HttpServlet {
 		
 		else if(rs.next())
 		{  con.close();
-	       out.println("<br><font color=red>Username already exists</font>");		        				         
-	      request.getRequestDispatcher("signup.html").include(request, response);}
+	       		        				         
+	      request.getRequestDispatcher("signup.html").include(request, response);
+	      out.println("<br><font color=red>Username already exists</font>");}
 			
 		
 		else if(SignupValidator.passwdvalidate(passw)==1)
