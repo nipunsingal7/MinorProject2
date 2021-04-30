@@ -49,12 +49,28 @@ public class Dashboard extends HttpServlet {
 		 
 		 if("Search Bus".equals(button))
 		 {  
-			 String start=request.getParameter("starting").trim();
+			 SimpleDateFormat ftm=new SimpleDateFormat("yyyy-MM-dd");
+			 Date d1=new Date();
+			 String currentdate=ftm.format(d1);
+			 Date d2=ftm.parse(currentdate);
+			 
+			 Date date2=ftm.parse(request.getParameter("date1"));
+			 
+			 if(date2.before(d2))
+			 { con.close();
+	        	request.getRequestDispatcher("dashboard.html").include(request, response);
+			    out.println("<br><font color=red>You cannot book for previous dates</font>");
+				 
+			 }
+			 
+			 else
+			 
+		  {  String start=request.getParameter("starting").trim();
 			 String dest=request.getParameter("destination").trim();
 			 
 			
-			 SimpleDateFormat ftm=new SimpleDateFormat("yyyy-MM-dd");
-			 Date date2=ftm.parse(request.getParameter("date1"));
+			 
+			 
              SimpleDateFormat ftm1=new SimpleDateFormat("EEEE");
              String sdate=ftm1.format(date2);
 			 
@@ -98,6 +114,8 @@ public class Dashboard extends HttpServlet {
 		    out.println("<br><font color=red>No bus found</font>");
         	   
            }
+           
+	  }     
            
 		 }
 		 

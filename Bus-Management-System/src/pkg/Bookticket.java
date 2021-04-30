@@ -92,7 +92,7 @@ public class Bookticket extends HttpServlet {
 			  		   
 		            	    for(int p=1;p<=passenger;p++)
 		            	      {	 
-		                        out.println( "&ensp;&emsp;&emsp;Enter Passenger Name:&emsp;<input type=text name=pname size=15/>&emsp;&emsp; Age:&emsp;<input type=number name=page min=1 size=7/><br><br>");      
+		                        out.println( "&ensp;&emsp;&emsp;Enter Passenger Name:&emsp;<input type=text name=pname size=15/>&emsp;&emsp; Age:&emsp;<input type=number name=page min=5 size=7/><br><br>");      
 			  		            
 		            		   }
 		            		 
